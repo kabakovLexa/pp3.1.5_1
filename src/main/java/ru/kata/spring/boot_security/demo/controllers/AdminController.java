@@ -6,22 +6,31 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private UserDAO userService;
+    private RoleService roleService;
+    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    public AdminController(UserDAO userService) {
+    public AdminController(RoleService roleService, UserRepository userRepository, UserService userService) {
+        this.roleService = roleService;
+        this.userRepository = userRepository;
         this.userService = userService;
     }
+
+
 
     @GetMapping("/")
     public String getAllShowUsers(Model model) {
         model.addAttribute("allUsers", userService.allUsers());
+//        model.addAttribute("allRoles", roleService.allRoles());
         return "allUsers";
     }
 
@@ -40,6 +49,7 @@ public class AdminController {
     @PostMapping("/")
     public String addUser(@ModelAttribute("user") User user) {
 
+
         userService.addUser(user);
         return "redirect:/";
     }
@@ -47,6 +57,7 @@ public class AdminController {
     @GetMapping("/{id}/edit")
     public String editUserForm(ModelMap model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.getUserId(id));
+        model.addAttribute("roles", roleService.allRoles());
         return "edit";
     }
 
