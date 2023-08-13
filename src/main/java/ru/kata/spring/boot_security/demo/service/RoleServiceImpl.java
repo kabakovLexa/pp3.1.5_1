@@ -23,28 +23,4 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.findAll();
     }
 
-    @Override
-    public Role getRoleId(Long id) {
-        return null;
-    }
-
-    @Override
-    public void addRole(Role role) {
-
-    }
-
-    @Override
-    public void updateRole(Role user) {
-
-    }
-
-    @Override
-    public void deleteRole(Long id) {
-
-    }
-
-    @Override
-    public Role getRoleByUsername(String username) {
-        return null;
-    }
 }
