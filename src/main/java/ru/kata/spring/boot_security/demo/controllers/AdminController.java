@@ -7,7 +7,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -15,13 +14,12 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 @RequestMapping("/admin")
 public class AdminController {
     private RoleService roleService;
-    private UserRepository userRepository;
     private UserService userService;
 
     @Autowired
-    public AdminController(RoleService roleService, UserRepository userRepository, UserService userService) {
+    public AdminController(RoleService roleService, UserService userService) {
         this.roleService = roleService;
-        this.userRepository = userRepository;
+
         this.userService = userService;
     }
 
@@ -67,12 +65,12 @@ public class AdminController {
         if (bindingResult.hasErrors())
             return "/edit";
         userService.updateUser(user);
-        return "redirect:/";
+        return "redirect:/admin/";
     }
 
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
-        return "redirect:/";
+        return "redirect:/admin/";
     }
 }
