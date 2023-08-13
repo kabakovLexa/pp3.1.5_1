@@ -7,9 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,8 +30,9 @@ public class AdminController {
 
     @GetMapping("/")
     public String getAllShowUsers(Model model) {
+        List<Role> roles = roleService.allRoles();
         model.addAttribute("allUsers", userService.allUsers());
-//        model.addAttribute("allRoles", roleService.allRoles());
+        model.addAttribute("role", roles);
         return "allUsers";
     }
 
@@ -41,6 +45,7 @@ public class AdminController {
 
     @GetMapping("/addUser")
     public String newPerson(@ModelAttribute("user") User user) {
+
 
         return "/addUser";
     }
@@ -65,6 +70,8 @@ public class AdminController {
                            BindingResult bindingResult, @PathVariable("id") Long id) {
         if (bindingResult.hasErrors())
             return "/edit";
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         userService.updateUser(user);
         return "redirect:/admin/";
     }
