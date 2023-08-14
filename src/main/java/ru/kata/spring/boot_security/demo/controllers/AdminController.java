@@ -19,13 +19,12 @@ import java.util.List;
 public class AdminController {
     private RoleService roleService;
     private UserService userService;
-    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public AdminController(RoleService roleService, UserService userService, PasswordEncoder passwordEncoder) {
+    public AdminController(RoleService roleService, UserService userService) {
         this.roleService = roleService;
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/")
@@ -52,8 +51,6 @@ public class AdminController {
 
     @PostMapping("/")
     public String addUser(@ModelAttribute("user") User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
         userService.addUser(user);
         return "redirect:/admin/";
     }
@@ -70,8 +67,6 @@ public class AdminController {
                            BindingResult bindingResult, @PathVariable("id") Long id) {
         if (bindingResult.hasErrors())
             return "/edit";
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
         userService.updateUser(user);
         return "redirect:/admin/";
     }

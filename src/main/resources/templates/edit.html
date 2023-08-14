@@ -21,14 +21,14 @@
   <label for="salary" >Password</label>
   <input type="text" th:field="*{password}" id = "password"/>
   <br>
-    <label>Roles:
-        <input type="checkbox" name="roles"
-               th:each="role : ${roles}"
-               th:text="${role.name}"
-               th:value="${role.id}"
-               th:field="*{roles}"
-        />
-    </label>
+  <label>Roles:
+    <input type="checkbox" name="roles"
+           th:each="role : ${roles}"
+           th:text="${role.name}"
+           th:value="${role.id}"
+           th:field="*{roles}"
+    />
+  </label>
 
   <br>
   <input type="submit" value="Update">
