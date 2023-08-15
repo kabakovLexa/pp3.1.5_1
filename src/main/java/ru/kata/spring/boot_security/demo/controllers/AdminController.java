@@ -55,23 +55,28 @@ public class AdminController {
         return "redirect:/admin/";
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/edit/{id}")
     public String editUserForm(ModelMap model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.getUserId(id));
         model.addAttribute("roles", roleService.allRoles());
         return "edit";
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/edit/{id}")
     public String editUser(@ModelAttribute("user") User user,
                            BindingResult bindingResult, @PathVariable("id") Long id) {
         if (bindingResult.hasErrors())
-            return "/edit";
+            return "edit";
+        if (user.getPassword() == null) {
+            user.setPassword("root");
+
+            return "edit";
+        }
         userService.updateUser(user);
         return "redirect:/admin/";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/admin/";
