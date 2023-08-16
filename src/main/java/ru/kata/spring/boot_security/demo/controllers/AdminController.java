@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -26,12 +27,19 @@ public class AdminController {
         this.roleService = roleService;
         this.userService = userService;
     }
+    @GetMapping("/user")
+    public String pageForUser (Model model, Principal principal) {
+        model.addAttribute("user",userService.getUserByUsername(principal.getName()));
+        return "user";
+    }
 
     @GetMapping("/")
-    public String getAllShowUsers(Model model) {
+    public String getAllShowUsers(Model model,Principal principal) {
         List<Role> roles = roleService.allRoles();
         model.addAttribute("allUsers", userService.allUsers());
         model.addAttribute("role", roles);
+        model.addAttribute("user",userService.getUserByUsername(principal.getName()));
+        model.addAttribute("currentUser", userService.getUserByUsername(principal.getName()));
         return "allUsers";
     }
 

@@ -164,5 +164,8 @@ public class User implements UserDetails {
                 ", roles=" + roles +
                 '}';
     }
+    public boolean hasRole(String roleName) {
+        return roles.stream().anyMatch(role -> role.getName().equals(roleName));
+    }
 }
 

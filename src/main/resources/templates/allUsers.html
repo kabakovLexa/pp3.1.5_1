@@ -1,42 +1,145 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>All Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Example</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" type="image/png" href="https://logos-download.com/wp-content/uploads/2021/01/Spring_Logo.png">
+    <style>
+        .top-bar {
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 10px;
+            margin: 0;
+        }
+        .sidebar {
+            background-color: white;
+            color: blue;
+            height: 100vh;
+            padding-top: 20px;
+        }
+
+        .nav-link {
+            color: blue;
+        }
+        .btn-edit {
+            background-color: #0097a7;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #FF0800;
+            color: white;
+        }
+        .role-info {
+            color: white;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .custom-header {
+            background-color: violet;
+            font-size: 20px;
+        }
+        .logout-link {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+        .logout-link a {
+            color: #888;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-<h1>All Users</h1>
+<div class="top-bar">
+    <div class="user-info">
+        <h4> <span th:text="${user.name }"></span><span th:text="${user.surname }"></span>
+            <span class="role-info">with roles:</span>
+            <span class="role-info" th:if="${user.hasRole('ROLE_ADMIN')}">ADMIN</span>
+            <span class="role-info" th:if="${user.hasRole('ROLE_USER')}">USER</span></h4>
+    </div>
+    <div class="logout-link">
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+            <div class="position-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-white bg-primary admin-link" href="/admin/">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-blue" href="user">User</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-<form th:action="@{/search}" method="post">
-    <input type="text" name="id" placeholder="Enter User Id">
-    <button type="submit">Show User</button>
-</form>
-<table>
-    <tr>
-        <th>id</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Salary</th>
-        <th>Roles</th>
-        <th>Actions</th>
-    </tr>
-    <tr th:each="user : ${allUsers}">
-        <td th:text="${user.getId()}"></td>
-        <td th:text="${user.getName()}"></td>
-        <td th:text="${user.getSurname()}"></td>
-        <td th:text="${user.getSalary()}"></td>
-        <td th:text="${user.getRoles()}"></td>
-        <td>
-            <form th:method="POST" th:action="@{/admin/edit/{id}(id=${user.getId()})}" th:object="${user}">
-                <button type="submit">Edit</button>
-            </form>
-            <form th:method="DELETE" th:action="@{'/admin/delete/' + ${user.getId()}}">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
-    </tr>
-</table>
-<br>
-<input type="button" value="Add" onclick="window.location.href = 'addUser'">
+
+        <main class="col-md-10 ml-sm-auto main-content">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mt-4">Admin Panel</h1>
+            </div>
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" href="allUsers">Users table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="addUser">New user</a>
+                </li>
+            </ul>
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th colspan="7" class="h2 custom-header">All users</th>
+                </tr>
+                <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Salary</th>
+                    <th>Roles</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${allUsers}">
+                    <td th:text="${user.getId()}"></td>
+                    <td th:text="${user.getName()}"></td>
+                    <td th:text="${user.getSurname()}"></td>
+                    <td th:text="${user.getSalary()}"></td>
+                    <td>
+                        <span th:if="${user.hasRole('ROLE_ADMIN')}">ADMIN</span>
+                        <span th:if="${user.hasRole('ROLE_USER')}">USER</span>
+                    </td>
+                    <td>
+                        <form th:method="POST" th:action="@{'/admin/edit/'+${user.getId()}}" th:object="${user}">
+                            <button type="submit" class="btn btn-edit">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:method="DELETE" th:action="@{'/admin/delete/' + ${user.getId()}}">
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
