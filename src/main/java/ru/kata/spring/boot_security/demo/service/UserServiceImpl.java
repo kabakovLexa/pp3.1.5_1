@@ -34,6 +34,7 @@ public class UserServiceImpl implements  UserService {
     }
 
 
+
     @Override
     public void addUser(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());

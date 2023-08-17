@@ -22,12 +22,13 @@ public class AdminController {
     private RoleService roleService;
     private UserService userService;
 
-
     @Autowired
     public AdminController(RoleService roleService, UserService userService) {
         this.roleService = roleService;
         this.userService = userService;
     }
+
+
     @GetMapping("/user")
     public String pageForUser (Model model, Principal principal) {
         model.addAttribute("user",userService.getUserByUsername(principal.getName()));
@@ -71,12 +72,13 @@ public class AdminController {
     public String editUser(@ModelAttribute("user") User user,
                            BindingResult bindingResult, @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/admin/"; // Вернуть обратно на форму редактирования с ошибками
+            return "redirect:/admin/";
         }
-        if (user.getPassword() == null) {
-            user.setPassword("root");
-        }
-        userService.updateUser(user);
+
+//        if (user.getPassword() == null) {
+//            user.setPassword("root");
+//        }
+        userService.addUser(user);
         return "redirect:/admin/";
     }
 

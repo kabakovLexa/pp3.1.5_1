@@ -25,14 +25,6 @@
         .nav-link {
             color: blue;
         }
-        .btn-edit {
-            background-color: #0097a7;
-            color: white;
-        }
-        .btn-delete {
-            background-color: #FF0800;
-            color: white;
-        }
         .role-info {
             color: white;
             font-weight: normal;
@@ -177,9 +169,10 @@
                                                th:value="${user.username}"/>
                                         <br>
                                         <label for="password0"><b>Password</b></label>
-                                        <input type="password" class="form-control"
+                                        <input type="password"
+                                               class="form-control"
                                                id="password0"
-                                               name="password" required>
+                                               name="password" required/>
                                         <br>
                                         <div>
                                             <label for="roles"
