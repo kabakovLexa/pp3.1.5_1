@@ -14,6 +14,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,48 +38,43 @@ public class AdminController {
     public String getAllShowUsers(Model model,Principal principal) {
         List<Role> roles = roleService.allRoles();
         model.addAttribute("allUsers", userService.allUsers());
-        model.addAttribute("role", roles);
+        model.addAttribute("roles", roles);
         model.addAttribute("user",userService.getUserByUsername(principal.getName()));
         model.addAttribute("currentUser", userService.getUserByUsername(principal.getName()));
         return "allUsers";
     }
 
-    @PostMapping("/search")
-    public String searchUserId(@RequestParam Long id, Model model) {
-        User user = userService.getUserId(id);
-        model.addAttribute("user", user);
-        return "showUserId";
-    }
-
     @GetMapping("/addUser")
-    public String newPerson(@ModelAttribute("user") User user) {
+    public String newPerson(@ModelAttribute("user") User user,Model model,Principal principal) {
+        model.addAttribute("user",userService.getUserByUsername(principal.getName()));
 
+        model.addAttribute("roles", roleService.allRoles());
 
         return "/addUser";
     }
 
-    @PostMapping("/")
-    public String addUser(@ModelAttribute("user") User user) {
+    @PostMapping("/new")
+    public String addUser(@ModelAttribute("user") User user, @RequestParam("roles") Set<Long> roleIds) {
+        user.setRoles(roleService.getRolesByIdIn(roleIds));
         userService.addUser(user);
         return "redirect:/admin/";
     }
 
     @GetMapping("/edit/{id}")
-    public String editUserForm(ModelMap model, @PathVariable("id") Long id) {
+    public String editUserForm(ModelMap model, @PathVariable("id") Long id,@RequestParam("roles") Set<Long> roleIds) {
         model.addAttribute("user", userService.getUserId(id));
         model.addAttribute("roles", roleService.allRoles());
-        return "edit";
+        return "redirect:/admin";
     }
 
     @PostMapping("/edit/{id}")
     public String editUser(@ModelAttribute("user") User user,
                            BindingResult bindingResult, @PathVariable("id") Long id) {
-        if (bindingResult.hasErrors())
-            return "edit";
+        if (bindingResult.hasErrors()) {
+            return "redirect:/admin/"; // Вернуть обратно на форму редактирования с ошибками
+        }
         if (user.getPassword() == null) {
             user.setPassword("root");
-
-            return "edit";
         }
         userService.updateUser(user);
         return "redirect:/admin/";

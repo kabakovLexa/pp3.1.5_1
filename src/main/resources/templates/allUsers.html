@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap Example</title>
+    <title>Admin Panel</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="https://logos-download.com/wp-content/uploads/2021/01/Spring_Logo.png">
     <style>
@@ -91,10 +91,10 @@
             </div>
             <ul class="nav nav-tabs mt-4">
                 <li class="nav-item">
-                    <a class="nav-link active" href="allUsers">Users table</a>
+                    <a class="nav-link active" href="/admin/">Users table</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="addUser">New user</a>
+                    <a class="nav-link" href="/admin/addUser">New user</a>
                 </li>
             </ul>
             <table class="table">
@@ -123,22 +123,97 @@
                         <span th:if="${user.hasRole('ROLE_USER')}">USER</span>
                     </td>
                     <td>
-                        <form th:method="POST" th:action="@{'/admin/edit/'+${user.getId()}}" th:object="${user}">
-                            <button type="submit" class="btn btn-edit">Edit</button>
-                        </form>
+
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-target="#editModal"
+                                th:data-bs-target="${'#editModal' + user.id}">
+                            Edit
+                        </button>
+
                     </td>
+
                     <td>
-                        <form th:method="DELETE" th:action="@{'/admin/delete/' + ${user.getId()}}">
-                            <button type="submit" class="btn btn-delete">Delete</button>
-                        </form>
+                        <a type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                           data-bs-target="#DELETE"
+                           th:data-bs-target="'#DELETE' + ${user.id}">Delete</a>
                     </td>
+
+
+                    <div class="modal fade" th:id="${'editModal'+ user.id}"
+                         aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">Edit user</h5>
+                                    <button type="button" class="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+
+                                </div>
+                                <div class="modal-body col-md text-center">
+                                    <form th:action="@{/admin/edit/{id}(id=${user.id})}"
+                                          th:object="${user}" th:method="POST">
+                                        <input type="hidden" name="_method" value="POST" />
+
+                                        <br>
+                                        <label for="name0"><b>Name</b></label>
+                                        <input th:name="name" th:type="text"
+                                               class="form-control" id="name0"
+                                               th:value="${user.name}"/>
+                                        <br>
+                                        <label for="surname0"><b>Surname</b></label>
+                                        <input th:name="surname" th:type="text"
+                                               class="form-control" id="surname0"
+                                               th:value="${user.surname}"/>
+                                        <br>
+                                        <label for="salary0"><b>Salary</b></label>
+                                        <input th:name="salary" th:type="text"
+                                               class="form-control" id="salary0"
+                                               th:value="${user.salary}"/>
+                                        <br>
+                                        <label for="username0"><b>Username</b></label>
+                                        <input th:name="salary" th:type="text"
+                                               class="form-control" id="username0"
+                                               th:value="${user.username}"/>
+                                        <br>
+                                        <label for="password0"><b>Password</b></label>
+                                        <input type="password" class="form-control"
+                                               id="password0"
+                                               name="password" required>
+                                        <br>
+                                        <div>
+                                            <label for="roles"
+                                                   class="col-form-label fw-bold">Roles</label>
+                                            <select class="form-control" id="roles" name="roles" multiple required>
+                                                <option value="1">ADMIN</option>
+                                                <option value="2">USER</option>
+                                            </select>
+                                        </div>
+
+                                        <br><br>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">
+                                                Edit
+                                            </button>
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </tr>
                 </tbody>
             </table>
         </main>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

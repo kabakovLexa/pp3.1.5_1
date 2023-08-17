@@ -7,11 +7,13 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
 import java.util.List;
+import java.util.Set;
+
 @Service
 @Transactional
 public class RoleServiceImpl implements RoleService {
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public RoleServiceImpl(RoleRepository roleRepository) {
@@ -23,4 +25,8 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.findAll();
     }
 
+    @Override
+    public Set<Role> getRolesByIdIn(Set<Long> id) {
+        return roleRepository.getRolesByIdIn(id);
+    }
 }
