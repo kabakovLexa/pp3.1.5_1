@@ -115,19 +115,14 @@
                         <span th:if="${user.hasRole('ROLE_USER')}">USER</span>
                     </td>
                     <td>
-
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-target="#editModal"
-                                th:data-bs-target="${'#editModal' + user.id}">
-                            Edit
-                        </button>
-
+                        <a type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                           data-bs-target="#editModal"
+                           th:data-bs-target="${'#editModal'+user.id}">Edit</a>
                     </td>
-
                     <td>
                         <a type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                            data-bs-target="#DELETE"
-                           th:data-bs-target="'#DELETE' + ${user.id}">Delete</a>
+                           th:data-bs-target="${'#DELETE'+user.id}">Delete</a>
                     </td>
 
 
@@ -198,6 +193,52 @@
                         </div>
                     </div>
 
+                    <div class="modal fade" th:id="${'DELETE'+user.id}"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete
+                                        user</h5>
+                                    <button type="button" class="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <form class="modal-body col-md text-center"
+                                      th:action="@{delete/{id}(id=${user.id})}"
+                                      th:method="DELETE">
+                                    <div class="modal-body col-md">
+                                        <label for="id"><b>ID</b></label>
+                                        <input th:name="id" th:type="text" class="form-control"
+                                               id="id" th:value="${user.id}" disabled/>
+                                        <br>
+                                        <label for="name1"><b>Name</b></label>
+                                        <input th:name="name" th:type="text"
+                                               class="form-control"
+                                               id="name1" th:value="${user.name}" disabled/>
+                                        <br>
+                                        <label for="surname1"><b>Surname</b></label>
+                                        <input th:name="surname" th:type="text"
+                                               class="form-control" id="surname1"
+                                               th:value="${user.surname}" disabled/>
+                                        <br>
+                                        <label for="salary1"><b>Salary</b></label>
+                                        <input th:name="salary" th:type="text"
+                                               class="form-control"
+                                               id="salary1" th:value="${user.salary}" disabled/>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-danger">Delete
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </tr>
                 </tbody>
             </table>
