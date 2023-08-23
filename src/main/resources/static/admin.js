@@ -1,5 +1,3 @@
-
-
 const url = 'http://localhost:8080/api/admin';
 
 
@@ -57,8 +55,10 @@ function loadTable(listAllUsers) {
     document.getElementById('tableBodyAdmin').innerHTML = res;
 }
 getAllUsers();
-// Новый юзер
 
+
+
+// Новый юзер
 document.getElementById('newUserForm').addEventListener('submit', (e) => {
     e.preventDefault()
     let role = document.getElementById('role_select')
@@ -90,11 +90,9 @@ document.getElementById('newUserForm').addEventListener('submit', (e) => {
             }
         })
 })
+
+
 //Изменение юзера
-
-
-
-
 function editModal(id) {
     fetch(url + '/' + id, {
         headers: {
@@ -148,10 +146,9 @@ async function editUser() {
     closeModal()
     getUserData()
 }
+
+
 // Удаление юзера
-
-
-
 function deleteModal(id) {
     fetch(url + '/' + id, {
         headers: {

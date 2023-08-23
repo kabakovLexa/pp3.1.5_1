@@ -9,11 +9,8 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-import org.hibernate.proxy.HibernateProxyHelper;
-
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -34,9 +31,7 @@ public class AdminRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserId(id);
-        User serializedUser = removeHibernateProxy(user);
-        return new ResponseEntity<>(serializedUser, HttpStatus.OK);
+        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
 
     private User removeHibernateProxy(User user) {

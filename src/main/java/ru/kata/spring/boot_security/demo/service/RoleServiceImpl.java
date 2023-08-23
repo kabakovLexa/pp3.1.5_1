@@ -7,7 +7,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
 import java.util.Collection;
-import java.util.Set;
+
 
 @Service
 @Transactional

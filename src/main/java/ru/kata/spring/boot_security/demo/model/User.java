@@ -45,6 +45,7 @@ public class User implements UserDetails {
         this.password = password;
         this.roles = roles;
     }
+
     public void addRole(Role role) {
         this.roles.add(role);
         role.getUsers().add(this);
@@ -165,6 +166,7 @@ public class User implements UserDetails {
                 ", roles=" + roles +
                 '}';
     }
+
     public boolean hasRole(String roleName) {
         return roles.stream().anyMatch(role -> role.getName().equals(roleName));
     }
