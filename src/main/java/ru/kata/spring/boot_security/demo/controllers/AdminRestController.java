@@ -23,7 +23,7 @@ public class AdminRestController {
 
     @GetMapping()
     public ResponseEntity<List<User>> showAllUsers() {
-        return new ResponseEntity<>(userService.allUsers(), HttpStatus.OK);
+        return ResponseEntity.ok(userService.allUsers());
     }
 
     @GetMapping("/{id}")

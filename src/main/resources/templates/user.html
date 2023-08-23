@@ -1,123 +1,79 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="icon" type="image/png" href="https://logos-download.com/wp-content/uploads/2021/01/Spring_Logo.png">
-    <style>
-        .top-bar {
-            background-color: black;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 10px;
-            margin: 0;
-        }
-        .sidebar {
-            background-color: white;
-            color: blue;
-            height: 100vh;
-            padding-top: 20px;
-        }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 
-        .nav-link {
-            color: blue;
-        }
-        .role-info {
-            color: white;
-            font-weight: normal;
-            margin-left: 5px;
-        }
-        .main-content {
-            padding: 20px;
-        }
-        .custom-header {
-            background-color: violet;
-            font-size: 20px;
-        }
-        .logout-link {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-        }
-        .logout-link a {
-            color: #888;
-            text-decoration: none;
-        }
-    </style>
+    <title>User</title>
 </head>
 <body>
-<div class="top-bar">
-    <div class="user-info">
-        <h4> <span th:text="${user.name }"></span><span th:text="${user.surname }"></span>
-            <span class="role-info">with roles:</span>
-            <span class="role-info" th:if="${user.hasRole('ROLE_ADMIN')}">ADMIN</span>
-            <span class="role-info" th:if="${user.hasRole('ROLE_USER')}">USER</span></h4>
-    </div>
-    <div class="logout-link">
-        <a href="/logout">Logout</a>
-    </div>
-</div>
-</div>
+<header>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">with role: USER</a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-white sidebar">
-            <div class="position-sticky">
-                <ul class="nav flex-column">
-
-                    <div th:if="${user.hasRole('ROLE_ADMIN')}">
-                        <li class="nav-item">
-                            <a class="nav-link text-blue" href="/admin/">Admin</a>
-                        </li>
-                        <p>This element is visible to administrators only.</p>
+        <div class="d-flex align-items-start">
+            <div class="col-md-2">
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link active"
+                            id="v-pills-user-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#v-pills-user"
+                            type="button" role="tab"
+                            aria-controls="v-pills-user"
+                            aria-selected="false"
+                    >User
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="tab-pane"
+                     id="v-pills-user"
+                     role="tabpanel"
+                     aria-labelledby="v-pills-user-tab"
+                     tabindex="0">
+                    <div>
+                        <h5>User information-page</h5>
                     </div>
-                    <li class="nav-item">
-                        <a class="nav-link text-white bg-primary admin-link" href="user">User</a>
-                    </li>
-                </ul>
+                    <div class="container-fluid">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Surname</th>
+                                <th>Age</th>
+                                <th>Role</th>
+                            </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
-        </nav>
-
-
-        <main class="col-md-10 ml-sm-auto main-content">
-            <div class="d-flex justify-content-between align-items-center">
-                <h1 class="mt-4">Admin Panel</h1>
-            </div>
-            <table class="table">
-                <thead class="thead-light">
-                <tr>
-                    <th colspan="7" class="h2 custom-header">About user</th>
-                </tr>
-                <tr>
-                    <th>id</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Salary</th>
-                    <th>Roles</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user : ${user}">
-                    <td th:text="${user.getId()}"></td>
-                    <td th:text="${user.getName()}"></td>
-                    <td th:text="${user.getSurname()}"></td>
-                    <td th:text="${user.getSalary()}"></td>
-                    <td>
-                        <span th:if="${user.hasRole('ROLE_ADMIN')}">ADMIN</span>
-                        <span th:if="${user.hasRole('ROLE_USER')}">USER</span>
-                    </td>
-
-                </tr>
-                </tbody>
-            </table>
-        </main>
+        </div>
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<!--<script type="text/javascript" src="user.js"></script>-->
 </body>
 </html>
-
