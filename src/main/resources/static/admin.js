@@ -3,6 +3,23 @@
 const url = 'http://localhost:8080/api/admin';
 
 
+async function getRoles() {
+    return await fetch("http://localhost:8080/api/admin/roles").then(response => response.json());
+}
+
+function listRoles() { //GET Response for Roles and write in HTML
+    let tmp = '';
+    getRoles().then(roles => roles.forEach(role => {
+        tmp += `<option value="${role.id}">${role.name}</option>`;
+    })).then(r => {
+        console.log('listRoles')
+        document.getElementById('editRole').innerHTML = tmp;
+        document.getElementById('deleteRole').innerHTML = tmp;
+    })
+}
+
+listRoles();
+
 function getUserData() {
     fetch(url)
         .then(res => res.json())
@@ -10,6 +27,7 @@ function getUserData() {
             loadTable(data)
         })
 }
+
 
 function getAllUsers() {
     fetch(url).then(response => response.json()).then(user =>
@@ -38,11 +56,9 @@ function loadTable(listAllUsers) {
     }
     document.getElementById('tableBodyAdmin').innerHTML = res;
 }
-
-
 getAllUsers();
-
 // Новый юзер
+
 document.getElementById('newUserForm').addEventListener('submit', (e) => {
     e.preventDefault()
     let role = document.getElementById('role_select')
@@ -64,7 +80,7 @@ document.getElementById('newUserForm').addEventListener('submit', (e) => {
             salary: document.getElementById('newSalary').value,
             username: document.getElementById('newUserName').value,
             password: document.getElementById('newPassword').value,
-            role: rolesAddUser
+            roles: rolesAddUser
         })
     })
         .then((response) => {
@@ -74,8 +90,11 @@ document.getElementById('newUserForm').addEventListener('submit', (e) => {
             }
         })
 })
-
 //Изменение юзера
+
+
+
+
 function editModal(id) {
     fetch(url + '/' + id, {
         headers: {
@@ -94,9 +113,6 @@ function editModal(id) {
         })
     });
 }
-
-
-
 async function editUser() {
     const form_ed = document.getElementById('modalEdit');
 
@@ -119,7 +135,7 @@ async function editUser() {
         salary: salaryValue,
         username: userNameValue,
         password: passwordValue,
-        role: listOfRole
+        roles: listOfRole
     }
     await fetch(url + '/' + user.id, {
         method: "PUT",
@@ -132,8 +148,10 @@ async function editUser() {
     closeModal()
     getUserData()
 }
-
 // Удаление юзера
+
+
+
 function deleteModal(id) {
     fetch(url + '/' + id, {
         headers: {
@@ -146,11 +164,10 @@ function deleteModal(id) {
             document.getElementById('deleteNameU').value = u.name;
             document.getElementById('deleteSalary').value = u.salary;
             document.getElementById('deleteUserName').value = u.username;
-            document.getElementById("deleteRole").value = u.role.map(r => r.role.substring(5)).join(", ");
+
         })
     });
 }
-
 async function deleteUser() {
     const id = document.getElementById("deleteId").value
     console.log(id)

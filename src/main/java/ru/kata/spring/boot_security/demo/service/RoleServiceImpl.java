@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 @Service
@@ -21,12 +21,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> allRoles() {
+    public Collection<Role> allRoles() {
         return roleRepository.findAll();
     }
 
-    @Override
-    public Set<Role> getRolesByIdIn(Set<Long> id) {
-        return roleRepository.getRolesByIdIn(id);
-    }
+
 }
