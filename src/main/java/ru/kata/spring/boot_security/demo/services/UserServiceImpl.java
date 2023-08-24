@@ -8,11 +8,12 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(long id) {
-        Optional<User> foundUser = userRepository.findById(id);
-        return foundUser.orElse(null);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User не найден с id: " + id));
     }
 }
