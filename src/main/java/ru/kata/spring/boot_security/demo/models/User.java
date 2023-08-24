@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.model;
+package ru.kata.spring.boot_security.demo.models;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Column(name = "salary")
     private Double salary;
 
-    @Column(name = "username")
+    @Column(name = "username", unique=true)
     private String username;
     @Column(name = "password")
     private String password;
