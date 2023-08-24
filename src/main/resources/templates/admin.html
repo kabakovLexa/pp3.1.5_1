@@ -19,8 +19,13 @@
 <header>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">with role: ADMIN USER</a>
+            <a class="navbar-brand">
+                <span id="usernamePlaceholder" style="font-weight: bold;"></span> with role: ADMIN
+            </a>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <span class="nav-link"></span>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
@@ -28,7 +33,6 @@
         </div>
     </nav>
 </header>
-
 
 <div class="container-fluid row">
     <div class="row gy-2">
@@ -359,6 +363,17 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript" src="../static/admin.js"></script>
 <script type="text/javascript" src="../static/user.js"></script>
+<script>
+    // Получение имени пользователя с бэкенда и обновление HTML-элемента
+    fetch("/api/user") // Замените "/api/user" на ваш эндпоинт для получения информации о пользователе
+        .then(response => response.json())
+        .then(user => {
+            document.getElementById("username").textContent = "with role: " + user.username;
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
+</script>
 
 </body>
 </html>

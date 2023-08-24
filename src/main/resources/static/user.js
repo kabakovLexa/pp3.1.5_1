@@ -22,3 +22,14 @@ function getInformationAboutUser(user) {
 }
 
 getUserPage();
+
+function getCurrentUser() {
+    fetch('http://localhost:8080/api/user')
+        .then(res => res.json())
+        .then(user => {
+            document.getElementById('usernamePlaceholder').textContent = user.username;
+        });
+}
+
+
+getCurrentUser();

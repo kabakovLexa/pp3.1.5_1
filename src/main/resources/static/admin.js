@@ -183,6 +183,17 @@ async function deleteUser() {
 }
 
 function closeModal() {
-    // document.getElementById("editClose").click()
+
     document.querySelectorAll(".btn-close").forEach((btn) => btn.click())
 }
+function getCurrentUser() {
+    fetch('http://localhost:8080/api/user')
+        .then(res => res.json())
+        .then(user => {
+            document.getElementById('usernamePlaceholder').textContent = user.username;
+        });
+}
+
+
+getCurrentUser();
+
