@@ -7,5 +7,4 @@ import java.util.Collection;
 @Service
 public interface RoleService {
     Collection<Role> allRoles();
-
 }

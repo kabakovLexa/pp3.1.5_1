@@ -9,8 +9,6 @@ public interface UserService {
 
     public List<User> allUsers();
 
-    public User getUserId(Long id);
-
     public void addUser(User user);
 
     public void updateUser(User user);

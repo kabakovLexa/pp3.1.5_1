@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
+
     UserRepository userRepository;
 
     @Autowired

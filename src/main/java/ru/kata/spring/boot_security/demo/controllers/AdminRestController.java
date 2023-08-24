@@ -34,13 +34,6 @@ public class AdminRestController {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
 
-    private User removeHibernateProxy(User user) {
-        if (user instanceof org.hibernate.proxy.HibernateProxy) {
-            user = (User) Hibernate.unproxy(user);
-        }
-        return user;
-    }
-
     @PostMapping()
     public ResponseEntity<HttpStatus> addNewUser(@RequestBody User user) {
         userService.addUser(user);

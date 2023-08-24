@@ -46,16 +46,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public void addRole(Role role) {
-        this.roles.add(role);
-        role.getUsers().add(this);
-    }
-
-    public void removeRole(Role role) {
-        this.roles.remove(role);
-        role.getUsers().remove(this);
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -167,8 +157,5 @@ public class User implements UserDetails {
                 '}';
     }
 
-    public boolean hasRole(String roleName) {
-        return roles.stream().anyMatch(role -> role.getName().equals(roleName));
-    }
 }
 
