@@ -24,7 +24,7 @@ public class AdminRestController {
         this.roleService = roleService;
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<User>> showAllUsers() {
         return ResponseEntity.ok(userService.allUsers());
     }
@@ -34,7 +34,7 @@ public class AdminRestController {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<HttpStatus> addNewUser(@RequestBody User user) {
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
